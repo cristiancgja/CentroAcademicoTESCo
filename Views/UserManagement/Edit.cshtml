@@ -1,0 +1,51 @@
+@model CentroAcademicoSQLite.Models.ApplicationUser
+
+<h2>Editar Alumno</h2>
+
+<form method="post" asp-action="Edit" asp-controller="UserManagement">
+@Html.AntiForgeryToken()
+
+<input type="hidden" asp-for="Id" />
+
+<label>Nombre</label>
+<input asp-for="Nombre" class="form-control" />
+
+<label>Apellidos</label>
+<input asp-for="Apellidos" class="form-control" />
+
+<label>Email</label>
+<input asp-for="Email" class="form-control" />
+
+<label>Teléfono</label>
+<input asp-for="PhoneNumber" class="form-control" />
+
+<label>Matrícula</label>
+<input asp-for="Matricula" class="form-control" />
+
+<label>Estatus</label>
+<input asp-for="Estatus" class="form-control" />
+
+<br />
+
+<button type="submit" class="btn btn-success">
+Guardar Cambios
+</button>
+
+<a asp-action="Index" class="btn btn-secondary">
+Volver
+</a>
+
+</form>
+
+<hr>
+
+<form asp-action="ResetPassword" asp-controller="UserManagement" method="post">
+@Html.AntiForgeryToken()
+
+<input type="hidden" name="id" value="@Model.Id" />
+
+<button class="btn btn-warning">
+Reiniciar contraseña
+</button>
+
+</form>

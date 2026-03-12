@@ -1,0 +1,210 @@
+@model List<CentroAcademicoSQLite.Models.Cita>
+
+<h2 class="text-success">Bienvenido al Sistema Institucional TESCo</h2>
+
+<div class="row mt-4">
+
+<div class="col-md-8">
+
+<div class="row">
+
+<div class="col-md-6">
+<div class="card shadow">
+<div class="card-body">
+
+<h5>Total Alumnos</h5>
+<h2>@Model.Select(c=>c.UsuarioId).Distinct().Count()</h2>
+
+</div>
+</div>
+</div>
+
+<div class="col-md-6">
+<div class="card shadow">
+<div class="card-body">
+
+<h5>Citas Programadas</h5>
+<h2>@Model.Count()</h2>
+
+</div>
+</div>
+</div>
+
+</div>
+
+
+<div class="card shadow mt-4">
+
+<div class="card-body">
+
+<h5>Próximas Citas</h5>
+
+<table class="table">
+
+<thead>
+
+<tr>
+<th>Fecha</th>
+<th>Hora</th>
+<th>Alumno</th>
+<th>Estado</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+@foreach(var c in Model.OrderBy(c=>c.FechaHora))
+{
+
+<tr>
+
+<td>@c.FechaHora.ToShortDateString()</td>
+
+<td>@c.FechaHora.ToShortTimeString()</td>
+
+<td>@c.Usuario?.Nombre @c.Usuario?.Apellidos</td>
+
+<td>
+
+@if(c.Asistio == null)
+{
+<span class="badge bg-primary">Programada</span>
+}
+else if(c.Asistio == true)
+{
+<span class="badge bg-success">Completada</span>
+}
+else
+{
+<span class="badge bg-warning">En Espera</span>
+}
+
+</td>
+
+</tr>
+
+}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="col-md-4">
+
+<div class="card shadow">
+
+<div class="card-body">
+
+<h5>Calendario de Citas</h5>
+
+<div id="calendar"></div>
+
+</div>
+
+</div>
+
+<div class="card shadow mt-3">
+
+<div class="card-body">
+
+<h5>Acciones Rápidas</h5>
+
+<a class="btn btn-success w-100 mb-2"
+asp-controller="Citas"
+asp-action="Create">
+
+Nueva Cita
+
+</a>
+
+<a class="btn btn-primary w-100 mb-2"
+asp-controller="UserManagement"
+asp-action="Index">
+
+Ver Alumnos
+
+</a>
+
+<a class="btn btn-secondary w-100"
+asp-controller="UserManagement"
+asp-action="Atendidos">
+
+Alumnos Atendidos
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function() {
+
+var calendarEl = document.getElementById('calendar');
+
+var calendar = new FullCalendar.Calendar(calendarEl, {
+
+initialView: 'dayGridMonth',
+
+locale:'es',
+
+headerToolbar:{
+left:'prev,next today',
+center:'title',
+right:''
+},
+
+events:'/Citas/Eventos',
+
+eventDidMount:function(info){
+
+if(info.event.extendedProps.estado == "Programada")
+{
+info.el.style.backgroundColor = "#0d6efd";
+}
+
+if(info.event.extendedProps.estado == "Completada")
+{
+info.el.style.backgroundColor = "#198754";
+}
+
+if(info.event.extendedProps.estado == "EnEspera")
+{
+info.el.style.backgroundColor = "#ffc107";
+}
+
+},
+
+eventClick:function(info){
+
+alert(
+"Cita con: "+info.event.title+
+"\nLugar: "+info.event.extendedProps.lugar
+);
+
+}
+
+});
+
+calendar.render();
+
+});
+
+</script>

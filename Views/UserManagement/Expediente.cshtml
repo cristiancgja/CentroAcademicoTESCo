@@ -1,0 +1,65 @@
+@model List<CentroAcademicoSQLite.Models.Cita>
+
+<h2>Historial del Alumno</h2>
+
+@if(Model == null || !Model.Any())
+{
+<p>No hay citas registradas.</p>
+}
+else
+{
+
+<table class="table table-bordered">
+
+<thead>
+
+<tr>
+<th>Fecha</th>
+<th>Profesional</th>
+<th>Lugar</th>
+<th>Estatus</th>
+<th>Asistencia</th>
+<th>Comentarios</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+@foreach(var cita in Model)
+{
+
+<tr>
+
+<td>@cita.FechaHora.ToString("dd/MM/yyyy HH:mm")</td>
+
+<td>@cita.Profesional</td>
+
+<td>@cita.Lugar</td>
+
+<td>@cita.EstatusProceso</td>
+
+<td>
+
+@if(cita.Asistio)
+{
+<span class="badge bg-success">Asistió</span>
+}
+else
+{
+<span class="badge bg-danger">No asistió</span>
+}
+
+</td>
+
+<td>@cita.Comentarios</td>
+
+</tr>
+
+}
+
+</tbody>
+
+</table>
+
+}
