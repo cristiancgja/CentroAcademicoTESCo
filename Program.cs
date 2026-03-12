@@ -95,5 +95,5 @@ app.UseSession();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Account}/{action=Login}/{id?}");
-
+app.Urls.Add("http://0.0.0.0:10000");
 app.Run();
