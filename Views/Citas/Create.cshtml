@@ -1,0 +1,296 @@
+@{
+ViewData["Title"] = "Programar Cita";
+}
+
+<h2>Programar Cita</h2>
+
+@if(ViewBag.Error != null)
+{
+<div class="alert alert-danger">
+@ViewBag.Error
+</div>
+}
+
+<form method="post" asp-action="Create" asp-controller="Citas" enctype="multipart/form-data" id="formCita">
+
+<div class="mb-3">
+
+<label>Buscar Alumno</label>
+
+<input id="buscarAlumno" class="form-control" placeholder="Escribe el nombre del alumno"/>
+
+<input type="hidden" id="usuarioId" name="usuarioId"/>
+
+<a class="btn btn-secondary mt-2"
+asp-controller="UserManagement"
+asp-action="Create">
+Registrar Alumno
+</a>
+
+</div>
+
+<div class="mb-3">
+
+<label>Fecha y Hora</label>
+
+<input id="fechaHora" name="fechaHora" class="form-control"/>
+
+</div>
+
+@if(User.IsInRole("Admin") || User.IsInRole("Asesor"))
+{
+
+<div class="mb-3">
+
+<label>Profesional que atenderá</label>
+
+<select name="profesionalId" class="form-control">
+
+@foreach(var p in ViewBag.Profesionales)
+{
+<option value="@p.Id">
+@p.Nombre @p.Apellidos
+</option>
+}
+
+</select>
+
+</div>
+
+<button type="button"
+class="btn btn-outline-primary mt-2"
+data-bs-toggle="modal"
+data-bs-target="#modalProfesional">
+
+Registrar Profesional
+
+</button>
+
+}
+
+<div class="mb-3">
+
+<label>Lugar</label>
+
+<input name="lugar" class="form-control"/>
+
+</div>
+
+<div class="mb-3">
+
+<label>Estatus</label>
+
+<select name="estatusProceso" class="form-control">
+
+<option value="Inicio de Proceso">Inicio de Proceso</option>
+<option value="En Proceso">En Proceso</option>
+<option value="Finalizado">Finalizado</option>
+
+</select>
+
+</div>
+
+<div class="mb-3">
+
+<label>Comentarios</label>
+
+<textarea name="comentarios" class="form-control"></textarea>
+
+</div>
+
+<div class="mb-3">
+
+<label>Archivo</label>
+
+<input type="file" name="archivo" class="form-control"/>
+
+</div>
+
+<button class="btn btn-success">
+Guardar Cita
+</button>
+
+</form>
+
+
+<div class="modal fade" id="modalProfesional" tabindex="-1">
+
+<div class="modal-dialog">
+
+<div class="modal-content">
+
+<div class="modal-header">
+
+<h5 class="modal-title">Registrar Profesional</h5>
+
+<button type="button"
+class="btn-close"
+data-bs-dismiss="modal"></button>
+
+</div>
+
+<div class="modal-body">
+
+<form method="post"
+action="/UserManagement/CreateProfesional">
+
+<div class="mb-3">
+
+<label>Nombre</label>
+
+<input name="nombre"
+class="form-control"
+required>
+
+</div>
+
+<div class="mb-3">
+
+<label>Apellidos</label>
+
+<input name="apellidos"
+class="form-control"
+required>
+
+</div>
+
+<div class="mb-3">
+
+<label>Correo</label>
+
+<input name="email"
+class="form-control"
+required>
+
+</div>
+
+<div class="mb-3">
+
+<label>Contraseña</label>
+
+<input name="password"
+type="password"
+class="form-control"
+required>
+
+</div>
+
+<div class="mb-3">
+
+<label>Rol</label>
+
+<select name="rol"
+class="form-control">
+
+<option value="Profesor">Profesor</option>
+<option value="Psicologo">Psicólogo</option>
+
+</select>
+
+</div>
+
+<button class="btn btn-success">
+
+Registrar Profesional
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+
+<link rel="stylesheet"
+href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+
+<script>
+
+flatpickr("#fechaHora",{
+
+enableTime:true,
+
+dateFormat:"Y-m-d H:i",
+
+minDate:"today"
+
+});
+
+</script>
+
+
+<script>
+
+$("#buscarAlumno").autocomplete({
+
+minLength:1,
+
+source:function(request,response){
+
+$.ajax({
+
+url:"/Citas/BuscarAlumno",
+
+data:{term:request.term},
+
+success:function(data){
+
+response($.map(data,function(item){
+
+return{
+
+label:item.nombre,
+
+value:item.nombre,
+
+id:item.id
+
+}
+
+}));
+
+}
+
+});
+
+},
+
+select:function(event,ui){
+
+$("#usuarioId").val(ui.item.id);
+
+}
+
+});
+
+</script>
+
+
+<script>
+
+$("#formCita").submit(function(){
+
+if($("#usuarioId").val()=="")
+{
+alert("Debes seleccionar un alumno registrado");
+return false;
+}
+
+});
+
+</script>

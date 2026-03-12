@@ -1,0 +1,73 @@
+@model List<CentroAcademicoSQLite.Models.Cita>
+
+<h2 class="text-success">Bienvenido(a) al Sistema Institucional TESCo</h2>
+
+<div class="row mt-4">
+
+<div class="col-md-4">
+<div class="card shadow">
+<div class="card-body text-center">
+
+<h5>Solicitudes Recibidas</h5>
+<h2>@(Model?.Count ?? 0)</h2>
+
+</div>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="card shadow">
+<div class="card-body text-center">
+
+<h5>Alumnos Atendidos</h5>
+<h2>@(Model?.Where(c => c.Asistio == true).Count() ?? 0)</h2>
+
+</div>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="card shadow">
+<div class="card-body text-center">
+
+<h5>Pendientes por Atender</h5>
+<h2>@(Model?.Where(c => c.Asistio != true).Count() ?? 0)</h2>
+
+</div>
+</div>
+</div>
+
+</div>
+
+
+<div class="card shadow mt-4">
+<div class="card-body">
+
+<h5>Solicitudes Recibidas</h5>
+
+<table class="table">
+
+<tr>
+<th>Alumno</th>
+<th>Fecha</th>
+<th>Acción</th>
+</tr>
+
+@if(Model != null)
+{
+foreach(var c in Model)
+{
+<tr>
+<td>@(c.Usuario?.Nombre ?? "Alumno")</td>
+<td>@c.FechaHora.ToString("dd/MM/yyyy HH:mm")</td>
+<td>
+<a class="btn btn-success btn-sm">Atender</a>
+</td>
+</tr>
+}
+}
+
+</table>
+
+</div>
+</div>

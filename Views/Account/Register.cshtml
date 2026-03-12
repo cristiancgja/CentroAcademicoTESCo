@@ -1,0 +1,103 @@
+@model CentroAcademicoSQLite.ViewModels.RegisterViewModel
+
+<h2>Registro - TESCo</h2>
+
+@if (ViewBag.Success != null)
+{
+<div class="alert alert-success">
+@ViewBag.Success
+</div>
+}
+
+<form method="post" asp-action="Register" asp-controller="Account">
+
+@Html.AntiForgeryToken()
+
+<div class="mb-3">
+<input asp-for="Nombre" class="form-control" placeholder="Nombre" />
+</div>
+
+<div class="mb-3">
+<input asp-for="Apellidos" class="form-control" placeholder="Apellidos" />
+</div>
+
+<div class="mb-3">
+<input asp-for="Email" class="form-control" placeholder="Correo institucional (usuario@tesco.edu.mx)" />
+</div>
+
+<div class="mb-3">
+<input asp-for="Password" type="password" class="form-control" placeholder="Contraseña" />
+</div>
+
+<div class="mb-3">
+<input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Confirmar contraseña" />
+</div>
+
+<div class="mb-3">
+<label>Clave institucional (solo personal)</label>
+<input asp-for="ClaveProfesor" class="form-control" />
+</div>
+
+<div class="mb-3">
+<label>Carrera</label>
+
+<select asp-for="Carrera" class="form-control">
+
+<option value="">Seleccione carrera</option>
+
+<option>Ingeniería en Sistemas Computacionales</option>
+<option>Ingeniería Mecatrónica</option>
+<option>Ingeniería Industrial</option>
+<option>Ingeniería Electromecánica</option>
+<option>Ingeniería Ambiental</option>
+<option>Ingeniería en Materiales</option>
+<option>Ingeniería en Tecnologías de la Información y Comunicaciones</option>
+<option>Ingeniería Civil</option>
+<option>Ingeniería en Gestión Empresarial</option>
+<option>Ingeniería Química</option>
+
+<option>Licenciatura en Administración</option>
+
+<option>Maestría en Ciencias en Ingeniería Industrial</option>
+
+</select>
+
+</div>
+
+<div class="mb-3">
+<label>Matrícula</label>
+<input asp-for="Matricula" class="form-control"/>
+</div>
+
+<button type="submit" class="btn btn-success">Registrarse</button>
+
+</form>
+
+<script>
+
+document.querySelector("form").addEventListener("submit", function(e){
+
+let correo = document.querySelector("[name='Email']").value;
+let clave = document.querySelector("[name='ClaveProfesor']").value;
+let carrera = document.querySelector("[name='Carrera']").value;
+let matricula = document.querySelector("[name='Matricula']").value;
+
+if(!correo.endsWith("@@tesco.edu.mx"))
+{
+alert("Debes usar tu correo institucional @@tesco.edu.mx");
+e.preventDefault();
+return;
+}
+
+if(clave == "")
+{
+if(carrera == "" || matricula == "")
+{
+alert("Carrera y matrícula son obligatorias para alumnos");
+e.preventDefault();
+}
+}
+
+});
+
+</script>

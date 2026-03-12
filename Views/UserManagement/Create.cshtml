@@ -1,0 +1,31 @@
+<h2>Registrar Alumno</h2>
+
+<form method="post" asp-controller="UserManagement" asp-action="Create">
+@Html.AntiForgeryToken()
+
+<input name="nombre" placeholder="Nombre" class="form-control mb-2" required />
+<input name="apellidos" placeholder="Apellidos" class="form-control mb-2" required />
+<input name="matricula" placeholder="Matrícula" class="form-control mb-2" required />
+<input name="email" placeholder="Correo institucional" class="form-control mb-2" required />
+<input name="telefono" placeholder="Teléfono" class="form-control mb-2" required />
+
+<label>Estatus</label>
+<select name="estatus" class="form-control mb-2">
+<option>Inicio de Proceso</option>
+<option>En Proceso</option>
+<option>Culminó Proceso</option>
+</select>
+
+<label>Contraseña inicial</label>
+<input name="password" type="password" class="form-control" required />
+
+<input name="profesionalAsignado" placeholder="Profesional asignado" class="form-control mb-3" />
+
+<button type="submit" class="btn btn-success">Registrar</button>
+
+</form>
+
+@if(ViewBag.Error != null)
+{
+<p style="color:red">@ViewBag.Error</p>
+}
