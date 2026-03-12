@@ -10,8 +10,8 @@ WORKDIR /app
 
 COPY --from=build /app/out .
 
-EXPOSE 10000
-
 ENV ASPNETCORE_URLS=http://+:10000
+
+EXPOSE 10000
 
 ENTRYPOINT ["dotnet", "CentroAcademicoSQLite.dll"]
