@@ -13,6 +13,7 @@ WORKDIR /app
 COPY --from=build /app/publish .
 
 ENV ASPNETCORE_URLS=http://+:10000
+ENV ASPNETCORE_ENVIRONMENT=Production
 
 EXPOSE 10000
 
